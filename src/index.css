@@ -1,6 +1,26 @@
+@font-face {
+  font-family: 'Formula1';
+  src: local('Formula1'), url('https://www.formula1.com/etc/designs/fom-website/fonts/F1Regular/Formula1-Regular.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'Formula1-bold';
+  src: local('Formula1'), url('https://www.formula1.com/etc/designs/fom-website/fonts/F1Bold/Formula1-Bold.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'Formula1-black';
+  src: local('Formula1'), url('https://www.formula1.com/etc/designs/fom-website/fonts/F1Black/Formula1-Black.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'Formula1-wide';
+  src: local('Formula1'), url('https://www.formula1.com/etc/designs/fom-website/fonts/F1Wide/Formula1-Wide.woff2') format('woff');
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Formula1', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
