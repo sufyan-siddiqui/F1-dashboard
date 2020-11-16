@@ -6,3 +6,5 @@
   - [ ] Last Race Result
   - [ ] News
 - [ ] Create Fantasy League
+
+**API Used**: http://ergast.com/mrd/
