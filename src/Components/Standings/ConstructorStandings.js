@@ -4,7 +4,7 @@ import Cell from "./Cell";
 export default function DriverStandings(){
     const [data, setData] = useState([])
     const [error, setError] = useState('')
-    const [year, setYear] = useState(new Date().getFullYear())
+    const [year, setYear] = useState(new Date().getFullYear() - 1)
     
 
     const headers = ['pos', 'team', 'points']

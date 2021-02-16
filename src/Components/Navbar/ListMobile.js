@@ -74,7 +74,9 @@ export default function ListMobile({Links, isNotCollapsed, setIsNotCollapsed}){
             <img 
                 src= 'https://www.formula1.com/etc/designs/fom-website/images/f1_logo.svg'
                 alt='logo'
-                
+                style = {{
+                    width: '75px'
+                }}
             />
             
         </nav>

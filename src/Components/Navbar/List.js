@@ -24,7 +24,8 @@ export default function List({Links}){
                     alt='logo'
                     style={{
                         padding: '0 0.8em',
-                        margin: '1em 0.5em'
+                        margin: '1em 0.5em',
+                        width: '70px',
                     }}
 			/>
             

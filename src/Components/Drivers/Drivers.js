@@ -9,7 +9,7 @@ export default function Drivers({
 }){
     const [data, setData] = useState([])
     const [error, setError] = useState('')
-    const [year] = useState(new Date().getFullYear())
+    const [year] = useState(new Date().getFullYear() -1)
 
 
     useEffect(()=>{

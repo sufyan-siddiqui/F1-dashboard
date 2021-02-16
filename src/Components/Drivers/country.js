@@ -18,5 +18,6 @@ export default
     "Spanish": "ES",
     "Thai": "TH",
     "Turkey": 'TR',
-    "UAE": 'AE'
+    "UAE": 'AE',
+    "Brazilian": 'BR'
 }
