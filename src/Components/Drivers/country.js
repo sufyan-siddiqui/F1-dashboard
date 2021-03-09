@@ -12,6 +12,7 @@ export default
     "French": "FR",
     "German": "DE",
     "Italian": "IT",
+    "Japanese": "JP",
     "Monegasque": "MC",
     "Mexican": "MX",
     "Russian": "RU",

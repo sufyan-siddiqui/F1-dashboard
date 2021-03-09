@@ -11,154 +11,160 @@ export default function Schedule({
     isMobile
 }){
     const [data, setData] = useState([])
-    const [season, setSeason] = useState()
+    const [season, setSeason] = useState('')
     const [error, setError] = useState('')
+    const [year, setYear] = useState(new Date().getFullYear())
+    const [nextRace, setNextRace] = useState()
 
     const headers = ['round', 'name', 'circuit', 'country', 'date']
 
     const filter = (data) => {
-        var months = data.filter(race => new Date(race.date.toString()).getMonth() === new Date().getMonth())
+        console.log(data)
+        var months = data.filter(race => new Date(race.date.toString()).getMonth() == new Date().getMonth())
         var days = months.filter(race => new moment(race.date.toString()).date() >=  moment().date())
+        console.log(days)
         return days[0]
     }
 
-    // const nextRace =
-    //         (
-    //         <div className="container-next-race"
-    //                     style={{
-    //                         backgroundColor: 'white',
-    //                         padding: '1.0em',
-    //                     }}
-    //                 >
-    //                     <div
-    //                     style={{
-    //                         padding: '0.5em',
-    //                         backgroundColor: '#15151e',
-    //                         color: 'white',
-    //                     }}
-    //                 >
+    useEffect(() => {
+        const nextRace = data.length > 0 ?
+            (
+            <div className="container-next-race"
+                        style={{
+                            backgroundColor: 'white',
+                            padding: '1.0em',
+                        }}
+                    >
+                        <div
+                        style={{
+                            padding: '0.5em',
+                            backgroundColor: '#15151e',
+                            color: 'white',
+                        }}
+                    >
 
-    //                     <fieldset
-    //                         style={{
+                        <fieldset
+                            style={{
                                 
                                 
-    //                             fontFamily: 'Formula1-black',
-    //                             fontSize: '1.5rem',
+                                fontFamily: 'Formula1-black',
+                                fontSize: '1.5rem',
                                 
-    //                             border: '5px solid red',
-    //                             borderTopRightRadius: "10px",
-    //                             borderLeft: '0',
-    //                             borderBottom: '0',
-    //                             flexDirection: 'row',
+                                border: '5px solid red',
+                                borderTopRightRadius: "10px",
+                                borderLeft: '0',
+                                borderBottom: '0',
+                                flexDirection: 'row',
                                 
-    //                         }}
-    //                     >
-    //                         <legend
-    //                             style={{
-    //                                 textAlign: 'left',
-    //                                 fontSize: '1rem',
-    //                                 textTransform: 'uppercase',
-    //                                 padding: '0.5em',
-    //                                 color: 'red'
-    //                             }}
-    //                         >Round {season === new Date().getFullYear ? filter(data).round : 0} - up Next</legend>
-    //                         <div
-    //                             css={css`
-    //                                 display:flex;
-    //                                 justify-content: space-between;
-    //                                 flex-direction:row;
-    //                                 flex-wrap: wrap;
-    //                                 align-items: center;
-    //                                 @media (max-width: 768px) {
-    //                                     flex-direction: column;
-    //                                 }
-    //                                 `
-    //                             }
-    //                         >
-    //                             <div
-    //                                 style={{
-    //                                     display: 'flex',
-    //                                     textAlign: 'center',
-    //                                     flexDirection: 'column',
-    //                                     alignItems: 'center',
-    //                                     margin: '0.3em'
-    //                                 }}
-    //                             >
-    //                                 <span
-    //                                     style={{
-    //                                         fontSize: '1.5rem'
-    //                                     }}
-    //                                 >
-    //                                     {new Date(filter(data).date).getDate()}
-    //                                 </span>
-    //                                 <span
-    //                                     style={{
-    //                                         fontFamily: 'Formula1-wide',
-    //                                         backgroundColor: 'white',
-    //                                         color:'black',
-    //                                         fontSize: '0.8rem'
+                            }}
+                        >
+                            <legend
+                                style={{
+                                    textAlign: 'left',
+                                    fontSize: '1rem',
+                                    textTransform: 'uppercase',
+                                    padding: '0.5em',
+                                    color: 'red'
+                                }}
+                            >Round {filter(data).round} - up Next</legend>
+                            <div
+                                css={css`
+                                    display:flex;
+                                    justify-content: space-between;
+                                    flex-direction:row;
+                                    flex-wrap: wrap;
+                                    align-items: center;
+                                    @media (max-width: 768px) {
+                                        flex-direction: column;
+                                    }
+                                    `
+                                }
+                            >
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        textAlign: 'center',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        margin: '0.3em'
+                                    }}
+                                >
+                                    <span
+                                        style={{
+                                            fontSize: '1.5rem'
+                                        }}
+                                    >
+                                        {new Date(filter(data).date).getDate()}
+                                    </span>
+                                    <span
+                                        style={{
+                                            fontFamily: 'Formula1-wide',
+                                            backgroundColor: 'white',
+                                            color:'black',
+                                            fontSize: '0.8rem'
 
-    //                                     }}
-    //                                 >
-    //                                     {moment(new Date(filter(data).date).getMonth()+1, 'MM').format("MMM")}
+                                        }}
+                                    >
+                                        {moment(new Date(filter(data).date).getMonth()+1, 'MM').format("MMM")}
                                         
                                         
-    //                                 </span>
-    //                             </div>
-    //                             <div
-    //                                 style={{
-    //                                     display:'flex',
-    //                                     flexDirection:'column',
-    //                                     textAlign: 'center',
-    //                                     margin: '0.3em'
-    //                                 }}
-    //                             >
-    //                                 <div
-    //                                     style={{
-    //                                         display:'flex',
-    //                                         justifyContent: 'space-between',
-    //                                         alignItems: 'center'
-    //                                     }}
-    //                                 >
-    //                                     <span>
+                                    </span>
+                                </div>
+                                <div
+                                    style={{
+                                        display:'flex',
+                                        flexDirection:'column',
+                                        textAlign: 'center',
+                                        margin: '0.3em'
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            display:'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center'
+                                        }}
+                                    >
+                                        <span>
 
-    //                                         {filter(data).Circuit.Location.country}
-    //                                     </span>
-    //                                     <span>
-    //                                         <img src={`https://www.countryflags.io/${country[`${filter(data).Circuit.Location.country}`]}/flat/32.png`} alt="flag"></img>
-    //                                     </span>
-    //                                 </div>
-    //                                 <span
-    //                                     style={{
-    //                                         fontSize: '1rem'
-    //                                     }}
-    //                                 >
-    //                                     {filter(data).raceName}
-    //                                 </span>
-    //                             </div>
-    //                             <div
-    //                                 style={{
-    //                                     alignItems: 'center',
-    //                                     textAlign: 'center',
-    //                                     margin: '0.3em'
-    //                                 }}
-    //                             >
-    //                                 {filter(data).Circuit.circuitName}
-    //                             </div>
-    //                         </div>
-    //                     </fieldset>
-    //                 </div>
-    //         </div>
-    //         );
+                                            {filter(data).Circuit.Location.country}
+                                        </span>
+                                        <span>
+                                            <img src={`https://www.countryflags.io/${country[`${filter(data).Circuit.Location.country}`]}/flat/32.png`} alt="flag"></img>
+                                        </span>
+                                    </div>
+                                    <span
+                                        style={{
+                                            fontSize: '1rem'
+                                        }}
+                                    >
+                                        {filter(data).raceName}
+                                    </span>
+                                </div>
+                                <div
+                                    style={{
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        margin: '0.3em'
+                                    }}
+                                >
+                                    {filter(data).Circuit.circuitName}
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+            </div>
+            ) : (<div></div>);
+            setNextRace(nextRace)
+    }, [data])
+    
 
     useEffect(()=>{
         const run = async ()=>{
             try{
-                var result = await fetch(`https://ergast.com/api/f1/current.json`);
+                var result = await fetch(`https://ergast.com/api/f1/${year}.json`);
                 var res = await result.json();
-                setSeason(res.MRData.RaceTable.season)
                 setData(res.MRData.RaceTable.Races)
-                console.log(season)
                 
             } catch(e){
                 setError('An Error occured')
@@ -189,7 +195,8 @@ export default function Schedule({
                     font-size: 20px;
                     text-align: center;
                     color: 'white';
-                    height: 100vh;
+                    height: 100%;
+                    
                 @media (max-width: 768px){
                     font-size: 10px;
                     height: 100vh;
@@ -203,12 +210,14 @@ export default function Schedule({
         >
             
             {
-                data.length>0 && season === new Date().getFullYear? 
+                data.length>0? 
             <div>
-                {/* <div>
-                    {filter(data) === "undefined" ? <div></div> : nextRace}
+                <div>
+                    {
+                        nextRace
+                    }
                 </div>
-                 */}
+                
                 <div className="container-schedule"
                     style={{
                         backgroundColor: 'white',

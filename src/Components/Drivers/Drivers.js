@@ -9,7 +9,7 @@ export default function Drivers({
 }){
     const [data, setData] = useState([])
     const [error, setError] = useState('')
-    const [year] = useState(new Date().getFullYear() -1)
+    const [year] = useState(new Date().getFullYear())
 
 
     useEffect(()=>{
@@ -76,7 +76,8 @@ export default function Drivers({
                         data.map(
                             (driver, index) => {
                                 const {Driver: {givenName, familyName, nationality, permanentNumber}, points, Constructors} = driver;
-                                const {name: constructor} = Constructors[0]
+                                var constructor
+                                Constructors.length === 0 ? constructor = "-" : {name: constructor} = Constructors[0]
                                 return <DriverCard 
                                             givenName={givenName}
                                             familyName={familyName}

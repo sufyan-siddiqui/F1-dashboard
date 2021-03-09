@@ -4,7 +4,7 @@ import Cell from "./Cell";
 export default function DriverStandings(){
     const [data, setData] = useState([])
     const [error, setError] = useState('')
-    const [year, setYear] = useState(new Date().getFullYear() - 1)
+    const [year, setYear] = useState(new Date().getFullYear())
 
     const headers = ['pos', 'driver', 'nationality', 'car', 'points']
     
@@ -115,7 +115,8 @@ export default function DriverStandings(){
                             { 
                                 data.map( (driver, index) => {
                                     const {position, points, Driver: {givenName, familyName, nationality}, Constructors} = driver;
-                                    const {name: constructorId} = Constructors[0]
+                                    var constructorId;
+                                    Constructors[0] === undefined ? constructorId = "-" : {name: constructorId} = Constructors[0]
                                     const bgColor = index%2!==0 ? 'white' : '#f4f4f4'
                                     return (
                                     <tr key={index}
