@@ -1,38 +1,53 @@
 import React, { useState, useEffect } from 'react'
 import DriverCard from './DriverCard'
 import colors from '../../Utilities/colors'
+import {API} from '../../constants/baseUrl'
+import axios from 'axios'
+import { useQuery } from 'react-query'
 
 export default function Drivers({
 	isNotCollapsed,
     setIsNotCollapsed,
     isMobile
 }){
-    const [data, setData] = useState([])
-    const [error, setError] = useState('')
+    // const [data, setData] = useState([])
+    // const [error, setError] = useState('')
     const [year] = useState(new Date().getFullYear())
 
 
-    useEffect(()=>{
-        const run = async ()=>{
-            try{
-                var result = await fetch(`https://ergast.com/api/f1/${year}/driverStandings.json`);
-                var res = await result.json();
-                setData(res.MRData.StandingsTable.StandingsLists[0].DriverStandings)
-            }
-            catch(e){
-                setError('Error fetching data')
+    // useEffect(()=>{
+    //     const run = async ()=>{
+    //         try{
+    //             var result = await fetch(`${API}/${year}/driverstandings`);
+    //             var res = await result.json();
+    //             setData(res.MRData.StandingsTable.StandingsLists[0].DriverStandings)
+    //         }
+    //         catch(e){
+    //             setError('Error fetching data')
                 
-            }
+    //         }
             
-            // console.log("my data",data);
-            // console.log("MR", data.MRData);
+    //         // console.log("my data",data);
+    //         // console.log("MR", data.MRData);
             
             
-        }
-        setData([])
-        run();
-    }, [year])
+    //     }
+    //     setData([])
+    //     run();
+    // }, [year])
 
+    const getDrivers = async () => {
+        try{
+            var result = await axios.get(`${API}/${year}/driverstandings`);
+            var res = result.data?.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+            return res;
+        }
+        catch(e){
+            setError('Error fetching data')
+        }
+    }
+
+    const {data, error, isLoading} = useQuery(["getDrivers", year], getDrivers);
 
     return(
         <div className="body-drivers"
@@ -72,7 +87,7 @@ export default function Drivers({
 
             >
                 {
-                    data.length>0 ?
+                    data?.length>0 ?
                         data.map(
                             (driver, index) => {
                                 const {Driver: {givenName, familyName, nationality, permanentNumber}, points, Constructors} = driver;
@@ -91,7 +106,7 @@ export default function Drivers({
                             }
                         )
                     :
-                        error.length>0 ?
+                        error?.length>0 ?
                             <h3>{error}</h3> :
                             <h3>Loading</h3>    
 

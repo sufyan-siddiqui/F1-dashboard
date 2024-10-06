@@ -15,12 +15,12 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react",
+        // "react",
         "prettier"
     ],
     "rules": {
         "prettier/prettier": [
-            "error",
+            "warn",
             {
               "printWidth": 80,
               "trailingComma": "es5",
@@ -31,5 +31,8 @@
               "endOfLine":"auto"
             }
           ]
+        //   "react": [
+        //     "warn"
+        //   ]
     }
 }

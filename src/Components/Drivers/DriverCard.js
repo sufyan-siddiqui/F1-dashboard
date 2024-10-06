@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from '@emotion/react'
 import {useEffect, useState} from 'react'
 import country from './country'
 
@@ -147,7 +147,10 @@ export default function DriverCard({givenName, familyName, constructor, number, 
                         
                     >
                         <img 
-                        src={`https://www.countryflags.io/${country[`${nationality}`]}/flat/48.png`}
+                        style={{
+                            width: "3rem"
+                        }}
+                        src={`https://flagsapi.com/${country[`${nationality}`]}/flat/64.png`}
                             alt="flag"
                         ></img>
                     </div>

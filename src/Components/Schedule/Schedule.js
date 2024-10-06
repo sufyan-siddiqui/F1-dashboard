@@ -1,184 +1,93 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from '@emotion/react'
 import {useEffect, useState} from 'react';
 import Cell from '../Standings/Cell'
 import moment from 'moment'
 import country from '../Drivers/country'
+import { getSchedule } from '../../actions/scheduleActions';
+import NextRace from './NextRace';
+import {API} from '../../constants/baseUrl'
+import { useQuery } from "react-query";
+import axios from 'axios';
 
 export default function Schedule({
 	isNotCollapsed,
     setIsNotCollapsed,
     isMobile
 }){
-    const [data, setData] = useState([])
+    // const [data, setData] = useSelector(state => state)
+    // const [data, setData] = useState([])
     const [season, setSeason] = useState('')
-    const [error, setError] = useState('')
+    // const [error, setError] = useState('')
     const [year, setYear] = useState(new Date().getFullYear())
-    const [nextRace, setNextRace] = useState()
+    const [nextRaceWidget, setnextRaceWidget] = useState()
+
+    const getRaces = async ()=>{
+        try{
+            var result = await axios.get(`${API}/${year}`);
+            return result.data.MRData.RaceTable.Races;
+            setData(res.MRData.RaceTable.Races)
+        } catch(e){
+            setError('An Error occured')
+        }      
+    }
+
+    const {data, error, isLoading} = useQuery(["schedule", year], getRaces);
+    
 
     const headers = ['round', 'name', 'circuit', 'country', 'date']
 
     const filter = (data) => {
-        console.log(data)
-        var months = data.filter(race => new Date(race.date.toString()).getMonth() == new Date().getMonth())
-        var days = months.filter(race => new moment(race.date.toString()).date() >=  moment().date())
-        console.log(days)
-        return days[0]
+        // console.log(data)
+        // var months = data.filter(race => new Date(race.date.toString()).getMonth() == new Date().getMonth())
+        // var days = months.filter(race => new moment(race.date.toString()).date() >=  moment().date())
+        var currDate = new Date();
+        for(let i = 0; i<data.length; i++){
+            var race = data[i];
+            if(moment(race.date.toString()).isSameOrAfter(currDate, 'day')){
+                return race;
+            }
+        }
+        
+        return null
+        // console.log(days)
+        // if(days.length > 0){
+        //     return days[0]
+        // } else {
+        //     var months = data.filter(race => new Date(race.date.toString()).getMonth() == new Date().getMonth() +  1)
+        //     return months[0];
+        // }
     }
 
     useEffect(() => {
-        const nextRace = data.length > 0 ?
-            (
-            <div className="container-next-race"
-                        style={{
-                            backgroundColor: 'white',
-                            padding: '1.0em',
-                        }}
-                    >
-                        <div
-                        style={{
-                            padding: '0.5em',
-                            backgroundColor: '#15151e',
-                            color: 'white',
-                        }}
-                    >
+        if(data?.length > 0){
+            var nextRace = filter(data)
 
-                        <fieldset
-                            style={{
-                                
-                                
-                                fontFamily: 'Formula1-black',
-                                fontSize: '1.5rem',
-                                
-                                border: '5px solid red',
-                                borderTopRightRadius: "10px",
-                                borderLeft: '0',
-                                borderBottom: '0',
-                                flexDirection: 'row',
-                                
-                            }}
-                        >
-                            <legend
-                                style={{
-                                    textAlign: 'left',
-                                    fontSize: '1rem',
-                                    textTransform: 'uppercase',
-                                    padding: '0.5em',
-                                    color: 'red'
-                                }}
-                            >Round {filter(data).round} - up Next</legend>
-                            <div
-                                css={css`
-                                    display:flex;
-                                    justify-content: space-between;
-                                    flex-direction:row;
-                                    flex-wrap: wrap;
-                                    align-items: center;
-                                    @media (max-width: 768px) {
-                                        flex-direction: column;
-                                    }
-                                    `
-                                }
-                            >
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        textAlign: 'center',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        margin: '0.3em'
-                                    }}
-                                >
-                                    <span
-                                        style={{
-                                            fontSize: '1.5rem'
-                                        }}
-                                    >
-                                        {new Date(filter(data).date).getDate()}
-                                    </span>
-                                    <span
-                                        style={{
-                                            fontFamily: 'Formula1-wide',
-                                            backgroundColor: 'white',
-                                            color:'black',
-                                            fontSize: '0.8rem'
-
-                                        }}
-                                    >
-                                        {moment(new Date(filter(data).date).getMonth()+1, 'MM').format("MMM")}
-                                        
-                                        
-                                    </span>
-                                </div>
-                                <div
-                                    style={{
-                                        display:'flex',
-                                        flexDirection:'column',
-                                        textAlign: 'center',
-                                        margin: '0.3em'
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            display:'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center'
-                                        }}
-                                    >
-                                        <span>
-
-                                            {filter(data).Circuit.Location.country}
-                                        </span>
-                                        <span>
-                                            <img src={`https://www.countryflags.io/${country[`${filter(data).Circuit.Location.country}`]}/flat/32.png`} alt="flag"></img>
-                                        </span>
-                                    </div>
-                                    <span
-                                        style={{
-                                            fontSize: '1rem'
-                                        }}
-                                    >
-                                        {filter(data).raceName}
-                                    </span>
-                                </div>
-                                <div
-                                    style={{
-                                        alignItems: 'center',
-                                        textAlign: 'center',
-                                        margin: '0.3em'
-                                    }}
-                                >
-                                    {filter(data).Circuit.circuitName}
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-            </div>
-            ) : (<div></div>);
-            setNextRace(nextRace)
+            if(nextRace === null){
+                setnextRaceWidget((<div></div>))
+            } else{
+                setnextRaceWidget(<NextRace race={nextRace}/>)
+            }
+        } else{
+            setnextRaceWidget((<div></div>))
+        }
     }, [data])
     
 
-    useEffect(()=>{
-        const run = async ()=>{
-            try{
-                var result = await fetch(`https://ergast.com/api/f1/${year}.json`);
-                var res = await result.json();
-                setData(res.MRData.RaceTable.Races)
+    // useEffect(()=>{
+    //     const run = async ()=>{
+    //         try{
+    //             var result = await fetch(`${API}/${year}`);
+    //             var res = await result.json();
+    //             setData(res.MRData.RaceTable.Races)
                 
-            } catch(e){
-                setError('An Error occured')
-            }
-            
-            
-           
-            
-            
-        }
-        run();
-        
-    
-    }, [])
+    //         } catch(e){
+    //             setError('An Error occured')
+    //         }      
+    //     }
+    //     run();
+    //     // dispatch(getSchedule(year))
+    // }, [])
 
     
 
@@ -210,11 +119,11 @@ export default function Schedule({
         >
             
             {
-                data.length>0? 
+                data?.length>0? 
             <div>
                 <div>
                     {
-                        nextRace
+                        nextRaceWidget
                     }
                 </div>
                 
@@ -303,7 +212,7 @@ export default function Schedule({
                 </div>
 
             </div>
-            : error.length>0?
+            : error?.length>0?
                 <div>{error}</div> :
                 season !== new Date().getFullYear ? 
                     <div style={{color: 'white'}}>Coming Soon..</div> :

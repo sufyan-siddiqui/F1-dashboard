@@ -2,9 +2,20 @@ import React, {useState, useEffect} from 'react'
 import './App.css'
 import Navbar from './Components/Navbar/Navbar'
 import Standings from "./Components/Standings/Standings"
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Drivers from './Components/Drivers/Drivers'
 import Schedule from './Components/Schedule/Schedule'
+import Login from './Components/Login/Login'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1000 * 20,
+		},
+	},
+})
 
 function App() {
 
@@ -25,33 +36,36 @@ function App() {
 	});
 
 	return (
-		<div className='App'>
-			<Router>
+		<QueryClientProvider client={queryClient}>
+			<div className='App'>
+				<Router>
 
-				<Navbar isNotCollapsed={isNotCollapsed} 
-						setIsNotCollapsed={setIsNotCollapsed}
-						isMobile={isMobile}
-						/>
-				<Switch>
-					<Route path="/" exact>
-						<Schedule isNotCollapsed={isNotCollapsed} 
-								  setIsNotCollapsed={setIsNotCollapsed}
-								  isMobile={isMobile}/>
-					</Route>
-					<Route path='/Standings'>
-						<Standings isNotCollapsed={isNotCollapsed} 
-								   setIsNotCollapsed={setIsNotCollapsed}
-								   isMobile={isMobile}/>
-					</Route>
-					<Route>
-						<Drivers isNotCollapsed={isNotCollapsed} 
-								 setIsNotCollapsed={setIsNotCollapsed}
-								 isMobile={isMobile}/>
-					</Route>
-				</Switch>
-			</Router>
+					<Navbar isNotCollapsed={isNotCollapsed} 
+							setIsNotCollapsed={setIsNotCollapsed}
+							isMobile={isMobile}
+							/>
+					<Routes>
+						<Route path="/" element={<Schedule isNotCollapsed={isNotCollapsed} 
+									setIsNotCollapsed={setIsNotCollapsed}
+									isMobile={isMobile}/>}>
+						</Route>
+						<Route path='/Standings' element={<Standings isNotCollapsed={isNotCollapsed} 
+									setIsNotCollapsed={setIsNotCollapsed}
+									isMobile={isMobile}/>}>
+						</Route>
+						<Route path="/Drivers" element={<Drivers isNotCollapsed={isNotCollapsed} 
+									setIsNotCollapsed={setIsNotCollapsed}
+									isMobile={isMobile}/>}>						
+						</Route>
+						<Route path="/Login" element={<Login isNotCollapsed={isNotCollapsed} 
+									setIsNotCollapsed={setIsNotCollapsed}
+									isMobile={isMobile}/>}>
+						</Route>
+					</Routes>
+				</Router>
 
-		</div>
+			</div>
+		</QueryClientProvider>
 	)
 }
 

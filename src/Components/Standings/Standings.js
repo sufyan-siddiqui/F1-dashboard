@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from '@emotion/react';
 import { useEffect, useState } from "react"
 import DriverStandings from './DriverStandings';
 import ConstructorStandings from './ConstructorStandings'
@@ -27,7 +27,7 @@ useEffect(() => {
         <div className="body-standings"
             style={{
                 backgroundColor: '#15151e',//#f4f4f4',
-                height: isMobile?'100vh':'100%',
+                height: '100vh',
                 padding: '1.5em 0.5em',
                 fontSize: fontSize,
                 textAlign: 'center',

@@ -1,6 +1,7 @@
 export default
 {
     "American": "US",
+    "USA": "US",
     "Austrian": "AT",
     "Australian": "AU",
     "Bahrain": 'BH',
@@ -20,5 +21,8 @@ export default
     "Thai": "TH",
     "Turkey": 'TR',
     "UAE": 'AE',
-    "Brazilian": 'BR'
+    "Brazilian": 'BR',
+    "Portugal": 'PT',
+    "Chinese": "CN",
+    "Argentinian": "AR"
 }

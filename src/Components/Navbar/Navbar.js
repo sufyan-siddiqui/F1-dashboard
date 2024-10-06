@@ -22,7 +22,6 @@ export default function Navbar({
 			name: 'Drivers',
 			route: '/Drivers'
 		},
-	
 	]
 
 	

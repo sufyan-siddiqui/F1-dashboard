@@ -1,34 +1,44 @@
 import React, {useEffect, useState} from 'react'
 import Cell from "./Cell";
+import {API} from '../../constants/baseUrl';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 
 export default function DriverStandings(){
-    const [data, setData] = useState([])
-    const [error, setError] = useState('')
+    // const [data, setData] = useState([])
+    // const [error, setError] = useState('')
     const [year, setYear] = useState(new Date().getFullYear())
 
     const headers = ['pos', 'driver', 'nationality', 'car', 'points']
     
-    useEffect(()=>{
-        const run = async ()=>{
-            try{
-                var result = await fetch(`https://ergast.com/api/f1/${year}/driverStandings.json`);
-                var res = await result.json();
-                setData(res.MRData.StandingsTable.StandingsLists[0].DriverStandings)
-            }
-            catch(e){
-                setError('Error fetching data')
+    // useEffect(()=>{
+    //     const run = async ()=>{
+    //         try{
+    //             var result = await fetch(`${API}/${year}/driverstandings`);
+    //             var res = await result.json();
+    //             setData(res.MRData.StandingsTable.StandingsLists[0].DriverStandings)
+    //         }
+    //         catch(e){
+    //             setError('Error fetching data')
                 
-            }
-            
-        
-            
-            
+    //         }           
+    //     }
+    //     setData([])
+    //     run();
+    // }, [year])
+
+    const getStandings = async () => {
+        try{
+            var result = await axios.get(`${API}/${year}/driverstandings`);
+            var res = result.data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+            return res;
         }
-        setData([])
-        run();
-        
-    
-    }, [year])
+        catch(e){
+            setError('Error fetching data')      
+        }           
+    }
+
+    const {data, error, isLoading} = useQuery(["driverStandings", year], getStandings);
 
 
     return (
@@ -88,7 +98,7 @@ export default function DriverStandings(){
                     }}
                 >
                     {
-                        data.length > 0 ?
+                        data?.length > 0 ?
                             <table 
                             style={{
                                 borderCollapse: 'collapse',
@@ -113,7 +123,7 @@ export default function DriverStandings(){
                             </thead>
                             <tbody>
                             { 
-                                data.map( (driver, index) => {
+                                data?.map( (driver, index) => {
                                     const {position, points, Driver: {givenName, familyName, nationality}, Constructors} = driver;
                                     var constructorId;
                                     Constructors[0] === undefined ? constructorId = "-" : {name: constructorId} = Constructors[0]
@@ -149,7 +159,7 @@ export default function DriverStandings(){
                             </tbody>
                         </table>
                         :
-                        error.length>0?
+                        error?.length>0?
                             <h3>{error}</h3>:
                             <h3>Loading...</h3>
                     }
